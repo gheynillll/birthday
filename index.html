@@ -5,51 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Universe | Special Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <style>
- /* Update bagian Media Queries di dalam <style> lu */
+<style>
+        :root {
+            --accent: #ff4d6d;
+            --accent-dim: rgba(255, 77, 109, 0.15);
+            --bg: #0a0508;
+            --surface: #1a0f14;
+        }
 
-@media (max-width: 768px) {
-    body {
-        overflow-y: auto; /* Izinkan scroll tipis di HP jika konten kepanjangan */
-    }
-    
-    .hero { 
-        flex-direction: column-reverse; 
-        text-align: center; 
-        padding: 60px 5% 40px; /* Kurangi padding atas bawah */
-        height: auto;
-        min-height: 100vh;
-        justify-content: center;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
-    .hero-content h1 { 
-        font-size: 2.2rem; /* Kecilin dikit font judulnya di HP */
-        margin-bottom: 1rem;
-    }
+        body {
+            background-color: var(--bg);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-    .hero-content p {
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem; /* Kurangi jarak bawah teks */
-    }
+        /* Falling Hearts Background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    .hero-img-container { 
-        margin-bottom: 20px; 
-    }
+        .heart {
+            position: absolute;
+            color: var(--accent);
+            opacity: 0.5;
+            animation: fall linear infinite;
+        }
 
-    .hero-img {
-        width: 60%; /* Kecilin ukuran foto di HP biar tombol naik */
-        max-width: 200px;
-    }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
 
-    .glass-card {
-        width: 90%;
-        padding: 25px; /* Biar kartu pesan gak kegedean di HP */
-    }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at 50% 50%, var(--accent-dim) 0%, transparent 60%);
+            position: relative;
+            z-index: 1;
+            transition: 0.8s ease;
+        }
 
-    .glass-card p {
-        font-size: 1rem;
-    }
-}
+        .hero-content { flex: 1.2; }
+        .hero-content h2 { 
+            font-family: 'Dancing Script', cursive;
+            color: var(--accent); 
+            font-size: 2rem; 
+            margin-bottom: 1rem; 
+        }
+        .hero-content h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        
+        .hero-img-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-img {
+            width: 80%;
+            max-width: 350px;
+            border-radius: 100% 100% 20px 20px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent-dim);
+        }
+
+        /* Message Overlay */
+        #messageOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 8, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px;
+        }
+
+        #messageOverlay.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .glass-card p {
+            font-size: 1.2rem;
+            color: #eee;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px var(--accent-dim);
+        }
+
+        .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .btn-close {
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 10px 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Fix for Mobile */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; }
+            .hero { 
+                flex-direction: column-reverse; 
+                text-align: center; 
+                padding: 80px 5% 40px; 
+                height: auto;
+            }
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-content p { font-size: 0.9rem; margin-bottom: 1.5rem; }
+            .hero-img { width: 60%; max-width: 200px; }
+            .glass-card { padding: 30px 20px; }
+            .glass-card p { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
